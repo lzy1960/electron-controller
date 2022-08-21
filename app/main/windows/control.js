@@ -1,4 +1,4 @@
-const { BrowserWindow, desktopCapturer } = require("electron");
+const { BrowserWindow, desktopCapturer, ipcRenderer, ipcMain } = require("electron");
 const path = require('path')
 
 let win
@@ -19,7 +19,6 @@ function createWindow () {
     const sources = await desktopCapturer.getSources({
       types: ['screen']
     })
-    console.log(sources);
     win.webContents.send('add-stream', sources[0].id)
   }
   getScreenStream()
