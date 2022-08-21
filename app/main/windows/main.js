@@ -14,7 +14,7 @@ function createWindow () {
   })
   if (isDev) {
     win.loadURL('http://localhost:3000')
-    // win.webContents.openDevTools()
+    win.webContents.openDevTools({ mode: 'detach' })
   } else {
     win.loadFile(path.resolve(__dirname, '../renderer/pages/control/index.html'))
   }

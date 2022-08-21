@@ -1,4 +1,4 @@
-const { BrowserWindow } = require("electron");
+const { BrowserWindow, desktopCapturer } = require("electron");
 const path = require('path')
 
 let win
@@ -11,7 +11,18 @@ function createWindow () {
       contextIsolation: false
     }
   })
+  win.webContents.openDevTools({ mode: 'detach' })
   win.loadFile(path.resolve(__dirname, '../../renderer/pages/control/index.html'))
+
+  // electron 17 开始，desktopCapturer只能写在主进程中
+  async function getScreenStream () {
+    const sources = await desktopCapturer.getSources({
+      types: ['screen']
+    })
+    console.log(sources);
+    win.webContents.send('add-stream', sources[0].id)
+  }
+  getScreenStream()
 }
 
 module.exports = { createWindow }
